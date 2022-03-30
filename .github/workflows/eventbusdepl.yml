@@ -1,0 +1,23 @@
+name: eventbus-depl
+
+on:
+  push:
+    branches: 
+      - master
+    paths:
+      - 'eventbus/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_ADMIN_KEY }}
+      - run: cd eventbus && gcloud builds submit --tag us.gcr.io/test1-345607/eventbus
+      - uses: google-github-actions/get-gke-credentials@v0
+        with:
+          cluster_name: cluster-1
+          location: asia-east1-a
+      - run: kubectl delete deployment comments && kubectl apply -f ./infra/k8s/eventbus.yaml 
