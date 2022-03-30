@@ -1,0 +1,53 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  # local:
+  #   push: false
+  googleCloudBuild:
+    projectId: test1-345607
+  artifacts:
+    - image: us.gcr.io/test1-345607/blogpost # us.gcr.io/projectID/imagename
+      context: blogpost #Folder Path
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '*.js'
+    - image: us.gcr.io/test1-345607/blogcomment
+      context: blogcomment #Folder Path
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '*.js'
+    - image: us.gcr.io/test1-345607/query
+      context: QueryService #Folder Path
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '*.js'
+    - image: us.gcr.io/test1-345607/ui
+      context: ui #Folder Path
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '*.js'
+    - image: us.gcr.io/test1-345607/eventbus
+      context: eventbus #Folder Path
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '*.js'
+  
