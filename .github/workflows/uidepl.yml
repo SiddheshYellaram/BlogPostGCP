@@ -20,4 +20,4 @@ jobs:
         with:
           cluster_name: cluster-1
           location: asia-east1-a
-      - run: kubectl delete deployment comments && kubectl apply -f ./infra/k8s/ui.yaml 
+      - run: kubectl delete deployment ui-depl && kubectl apply -f ./infra/k8s/ui.yaml 
